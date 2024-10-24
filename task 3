@@ -1,0 +1,38 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.svm import SVC
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Load the digits dataset (similar to MNIST)
+digits = datasets.load_digits()
+X, y = digits.data, digits.target
+
+# Split the data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train the SVM classifier
+clf = SVC(gamma='scale')
+clf.fit(X_train, y_train)
+
+# Make predictions
+y_pred = clf.predict(X_test)
+
+# Evaluate the model
+print("Classification Report:")
+print(classification_report(y_test, y_pred))
+
+print("Confusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
+
+# Function to display a sample image and its prediction
+def display_sample_image(index):
+    image = X_test[index].reshape(8, 8)  # Resize to 8x8 for digits dataset
+    plt.imshow(image, cmap='gray')
+    plt.title(f'Predicted: {y_pred[index]}')
+    plt.axis('off')
+    plt.show()
+
+# Display a sample image
+display_sample_image(0)
